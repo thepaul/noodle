@@ -1,0 +1,12 @@
+Noodle: aborted attempt to make a lisp-like language targeting the Python VM
+
+So, this was mostly done 7-8 years ago, when I thought I knew a lot about
+programming languages but I didn't really know squat (still don't), and I made
+a bunch of bad design decisions. Once I started to realize the corners I'd
+painted myself into, I took down the tarball I'd been distributing.
+
+But now I don't mind so much being embarrassed by old stupid code, and bits and
+pieces of it might be useful to other people, so here for the first time on
+Github, I present Noodle.
+
+the paul, 2013-01-02
