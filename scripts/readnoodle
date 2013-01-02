@@ -1,0 +1,8 @@
+#!/usr/bin/env python2.4
+
+import sys
+from Noodle import reader
+from Noodle.NoodleBasics import Symbol
+import pprint
+
+pprint.pprint((Symbol('begin'),) + reader.Reader(file(sys.argv[1], 'r')).read_elements())

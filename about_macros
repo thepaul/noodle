@@ -1,0 +1,2 @@
+macros run in the compiling_namespace while the program is being compiled,
+and in the module's namespace if run from import

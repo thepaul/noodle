@@ -1,0 +1,29 @@
+#!/usr/bin/env python2.4
+
+import sys, dis
+import marshal
+
+codetype = type((lambda: 0).func_code)
+
+def show_dis(c):
+    dis.dis(c)
+    print "(names: %s)" % (c.co_names,)
+    print "(varnames: %s)" % (c.co_varnames,)
+    print "(freevars: %s)" % (c.co_freevars,)
+    print "(cellvars: %s)" % (c.co_cellvars,)
+    print "(argcount: %d)" % c.co_argcount
+    print "(consts: %s)" % (c.co_consts,)
+    print "(flags: %s)" % hex(c.co_flags)
+    print "(nlocals: %d)" % c.co_nlocals
+    print "(stacksize: %d)" % c.co_stacksize
+    for num, const in enumerate(c.co_consts):
+        if isinstance(const, codetype):
+            print
+            print "Disassembly of const %d (%s):" % (num, const.co_name)
+            show_dis(const)
+
+if __name__ == "__main__":
+    f = file(sys.argv[1], 'r')
+    f.seek(8)
+    print "Disassembly of %s:" % sys.argv[1]
+    show_dis(marshal.load(f))

@@ -1,0 +1,10 @@
+perhaps a tuple as the first argument to except should be treated as a
+tuple, and not a function call:
+
+(try blah (except (NameError e) @foo)
+          (except NameError @foo)
+          (except ((NameError AttributeError) e) @foo)
+          (except ((NameError AttributeError)) @foo)
+          (except (((GetInstance errortype))) @foo)
+          (except () @foo))
+

@@ -1,0 +1,131 @@
+NOTE! This document may not be completely correct at this point.
+
+
+
+variable classes-
+
+* local (LOAD_FAST, STORE_FAST)
+* free; there is a nesting block with a corresponding cellvar
+  (LOAD_DEREF, STORE_DEREF)
+* cellvar; there may be nested block with corresponding free variables
+  (LOAD_DEREF, STORE_DEREF)
+* global (LOAD_GLOBAL, STORE_GLOBAL)
+
+(LOAD_NAME, STORE_NAME ??)
+
+in python:
+
+ ** Assigning to a variable anywhere in a scope makes it local (or cell)
+ ** only reading a variable makes it global (or free)
+
+in noodle:
+
+ ** if a variable is local to an enclosing block, it's free (whether assigning
+    or reading)
+ ** otherwise, if it's assigned in the block, it's local (or cell)
+ ** otherwise, it's global
+ (but these are overrideable with (global), (let), and (define))
+
+LoadName/StoreName is for global/local/cell
+
+lists-
+
+* varnames- names of variables which have been determined to have a local
+  scope, but which may be made cellvars later.
+
+* cellvars- names of variables which are treated as cellvars.
+
+* freevars- names of variables which are treated as free variables.
+
+* names- any other names which will be needed in the function (attribute
+  names, globals, etc)
+
+when accessing a variable during compilation-
+
+* if that variable has its scope specifically declared (i.e., (global),
+  (free-variable), (let), etc) then use that scope.
+
+* if that variable is in varnames, defer scope determination with a LoadName
+  or StoreName instance. Put variable in varnames.
+
+* if that variable is in a nesting block, make it free and request the
+  parent to make the corresponding variable a cellvar. (Any intermediate
+  blocks will also add a free variable with that name.)
+
+* otherwise-
+
+  - if assigning to the variable, defer scope determination with a StoreName
+    instance
+
+  - if reading the variable's value, make it global
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+first-
+
+seed varnames with function arguments, if any
+
+load/store declared vars as requested
+if vars are already in freevars, they're free
+if vars are already in varnames, they're local/cell
+   (we know they're not in an enclosing scope, and that they're assigned to).
+   Use LoadName/StoreName instance
+if vars are already in unknowns:
+   If assigning, they're local/cell. Add to varnames and use StoreName instance
+   Otherwise, use LoadName instance
+if vars are in enclosing block, they're free (put in freevars)
+otherwise, if assigning, put in varnames and use StoreName instance
+otherwise, put in unknowns and use LoadName instance
+
+after compilation-
+
+compile subblocks
+  if subblock wants to attach a free variable here, allow if variable
+     is already in freevars or cellvars. Also, if var is in varnames,
+     allow and add to cellvars.
+  otherwise, ask parent; if parent returns True, add var to freevars.
+
+for LoadName instances:
+  if in cellvars, get as deref
+  if in varnames, get as local
+  otherwise, global
+
+for StoreName instances:
+  if in cellvars, store as deref
+  if in varnames, store as local
+  otherwise, error!

@@ -1,0 +1,61 @@
+#!/usr/bin/env python2.4
+#
+# runnable_nuc
+
+usage_info = \
+"""runnable_nuc - make compiled Noodle code into an executable file
+
+Usage: runnable_nuc <nucfile> [<outputfile>]
+
+If no outputfile is specified, and nucfile ends in '.nuc', then the default
+outputfile is the same as nucfile with the '.nuc' chopped off. This program
+will not overwrite an existing file, though.
+
+The outputfile will be made mode 0755. This is not yet overrideable.
+
+Note that the output file is just the input file with some special shell
+code prepended. It will still require Python (and sh).
+"""
+
+def usage():
+    sys.stderr.write(usage_info)
+
+import sys, os
+
+shellcode = \
+"""#!/bin/sh
+# created by runnable_nuc
+exec python2.4 - "$0" <<'EOShell'
+import sys, marshal
+f = file(sys.argv[1], 'rb')
+f.seek(%-4s)
+exec marshal.load(f)
+EOShell
+"""
+shellcode %= (len(shellcode) + 8)
+
+def make_runnable(fname, outfname):
+    outf = file(outfname, 'wb')
+    outf.write(shellcode)
+    outf.write(file(fname, 'rb').read())
+    outf.close()
+    os.chmod(outfname, 0755)
+
+def main():
+    if len(sys.argv) < 2 or len(sys.argv) > 3:
+        usage()
+        sys.exit(1)
+    if len(sys.argv) == 3:
+        outfname = sys.argv[2]
+    elif sys.argv[1].endswith('.nuc'):
+        outfname = sys.argv[1][:-4]
+    else:
+        sys.stderr.write("Don't know what to call output file.\n")
+        sys.exit(2)
+    if os.path.exists(outfname):
+        sys.stderr.write("Output file already exists.\n")
+        sys.exit(3)
+    make_runnable(sys.argv[1], outfname)
+
+if __name__ == "__main__":
+    main()

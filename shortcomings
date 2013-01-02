@@ -1,0 +1,10 @@
+repr() of builtin types will be Python syntax instead of Noodle. Provide
+  custom (nurepr) function which overrides the repr for lists, tuples, dicts?
+
+won't be able to do any compilation or evaluation at runtime when Noodle
+  runtime isn't available (which is a valid intended use for compiled
+  Noodle code)
+
+macros taking keyword arguments would be nice, but difficult to differentiate
+  between intending the tuple (mkkeyword foo bar) to pass through and
+  intending to give the foo:bar keyword arg to the macro.

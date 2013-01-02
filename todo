@@ -1,0 +1,46 @@
+noodle todo
+in no particular order
+
+- macro namespace issues
+  + how to shadow a macro but still reference the original
+  + scope: minimize macros interfering with one another
+- docs!
+- add syntaxes for 'for'/'for-list'/'for-iter':
+  + (for foo in bar bonk)  # current
+  + (for (foo in bar) bonk)  # same as above
+  + (for (foo in bar if baz) bonk)
+  + determine whether (for (foo in bar (for blah in baz))) syntax is needed
+- expression parameters to in-place operators i.e. (+= [foo bar] 1)
+- rename 'begin' as 'progn'
+- running a .nuc file at toplevel should still load its macros (for eval)
+- tests:
+  + add tests for all bytecode macros
+  + add tests for all special operators
+  + add tests for all runtime functions
+  + add tests for line numbering
+  + add system for running all tests (needn't be sophisticated)
+- SCM
+- add macro to set compilation options, like "don't write macros to .nuc"
+- arguments to break/continue, and named loops?
+- generic functions machinery
+- loop macro as in CL
+- does Noodle/importing.py need to acquire/release the import lock? Where?
+- error reporting:
+  + syntax errors from parser should indicate code location
+  + errors in macro expansion should indicate code location
+  + define more friendly parse error conditions and messages
+- interactive interpreter:
+  + tab completion
+  + history saving
+  + startup file
+  + make read-eval-print loop print lists, tuples, and dicts in Noodle syntax
+- syntax highlighting:
+  + special colors for parens of escaped tuples, maps, and lists?
+  + special colors for "`" and (",", ",@") when inside "`()"
+  + emacs major mode
+- bytecode optimization
+  + LOAD_CONST True / JUMP_IF_FALSE (while 1: loop tightening)
+  + LOAD_* / POP_TOP
+  + DUP_TOP / STORE_* / POP_TOP
+  + STORE_* / LOAD_*
+- profiling for areas of Noodle which need the most speed increase

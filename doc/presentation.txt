@@ -1,0 +1,60 @@
+Intro to Noodle
+
+- lisp-like syntax, python-like insides
+
+from Python, Noodle inherits:
+- easy access to attributes
+- dynamic attributes
+- unified subscription and iteration protocols
+- generators! (and soon, coroutines)
+- python's versatile string syntax (two quote styles, C-style backslash
+  escapes, raw strings, unicode strings, triple-quotes, etc)
+- (IMO) smarter keyword argument handling
+- namespaces
+
+from Lisp:
+- macros!!!
+  - templating via quasiquoting
+- everything is an expression
+- unrestricted lambda
+- readtables/reader macros
+- generic functions
+- functionality similar to LOOP and FORMAT
+- direct reassignment to closed-over variables
+- operators are functions
+- generally more advanced compilation (often to machine language)
+
+from both:
+- classes and metaclasses
+- varargs, keyword-arguments
+- closures
+- docstrings
+- all kinds of dynamic goodness, garbage collection, finalizers,
+  introspection, etc
+
+some todos:
+- documentation
+- possibly syntax refinement
+- errors in compilation just give largish backtraces and information about
+  the error- no indication of where it occurred
+- bytecode-level optimization
+- add some syntaxes to the for-loop macros to get the effects of:
+    for foo in bar if baz:
+  and
+    [(a, b) for a in foo for b in bar]
+- expression parameters to in-place math operators, i.e. (+= [foo bar] 1)
+  right now only symbols are allowed as the first argument.
+- interactive interpreter:
+  - tab completion
+  - history saving
+  - startup file
+  - print lists, tuples, dicts in Noodle syntax
+
+
+mention
+
+motivation
+- macros
+- unrestricted lambda
+- full closures
+- everything returns a value (including control structures)
